@@ -8,7 +8,7 @@ pipeline {
         AWS_REGION = 'us-east-1'
         CLUSTER_NAME = ''
         LIFECYCLE = ""
-        CREDENTIAL_ID = "sd-aws-creds-dev"
+        CREDENTIAL_ID = "aws-creds-dev"
     }
 
     stages {
