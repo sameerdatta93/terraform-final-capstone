@@ -31,7 +31,7 @@ pipeline {
 						agent {
                               docker { 
                                                         image 'samdatta93/terraform-aws-cli:latest'
-                                                        args '-u root'
+                                                     
 args '--entrypoint=""'
 
                                                 }
@@ -44,19 +44,8 @@ args '--entrypoint=""'
 										echo 'Inside Desploy Terraform';
 										
 										terraform --version
-apk update
-apk add curl unzip python3 py3-pip groff less bash
-pip3 install awscli --upgrade
+										pwd
 
-aws --version
-echo ' Done';
-										unzip -o terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
-										rm -rf terraform_*.zip
-										rm -rf terraform_*.zip.*
-										mv terraform $HOME/bin/
-export PATH=$HOME/bin:$PATH
-										terraform --version
-										aws --version
 									'''
 									}                                
 									
