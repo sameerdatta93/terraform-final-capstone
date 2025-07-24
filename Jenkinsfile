@@ -47,7 +47,7 @@ pipeline {
 										unzip -o terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
 										rm -rf terraform_*.zip
 										rm -rf terraform_*.zip.*
-										mv terraform /usr/local/bin/
+										sudo mv terraform /usr/local/bin/
 										terraform --version
 										aws --version
 									'''
