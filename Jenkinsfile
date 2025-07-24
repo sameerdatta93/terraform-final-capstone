@@ -45,6 +45,7 @@ args '--entrypoint=""'
 										
 										terraform --version
 										pwd
+ls
 
 									'''
 									}                                
