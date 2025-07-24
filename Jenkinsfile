@@ -30,8 +30,8 @@ pipeline {
                     }
 						agent {
                               docker { 
-                                                        image 'samdatta93/aws-cli-kubectl-cp:latest'
-                                                        args '--entrypoint=""'
+                                                        image 'samdatta93/terraform-aws-cli:latest'
+                                                        
                                                 }
                         }
 										
@@ -41,9 +41,9 @@ pipeline {
 									sh '''
 										echo 'Inside Desploy Terraform';
 										
-										rm -rf /usr/local/bin/terraform
-mkdir -p $HOME/bin										
-wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
+										terraform --version
+aws --version
+echo ' Done';
 										unzip -o terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
 										rm -rf terraform_*.zip
 										rm -rf terraform_*.zip.*
