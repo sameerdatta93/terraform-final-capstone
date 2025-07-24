@@ -29,11 +29,10 @@ pipeline {
                         }
                     }
 						agent {
-                                docker { 
-                                        image 'node:14-alpine'
-                                        args '-e HOME=/tmp -e NPM_CONFIG_PREFIX=/tmp/.npm'
-                                        reuseNode true
-                                }
+                              docker { 
+                                                        image 'samdatta93/aws-cli-kubectl-cp:latest'
+                                                        args '--entrypoint=""'
+                                                }
                         }
 										
 						 steps{
