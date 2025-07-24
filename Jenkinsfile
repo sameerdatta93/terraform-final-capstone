@@ -2,6 +2,7 @@ properties([parameters(getParametersBasedOnBuild())])
 pipeline {
     agent any 
     environment {
+	TERRAFORM_VERSION="1.8.2" 
         DOCKERHUB_CREDS = 'sd-dockerhub-creds'
         VERSION = "2.0.${env.BUILD_NUMBER}"
         AWS_REGION = 'us-east-1'
