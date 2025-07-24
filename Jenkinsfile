@@ -38,6 +38,7 @@ args '--entrypoint=""'
                         }
 										
 						 steps{
+withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${CREDENTIAL_ID}"]]){
 							script {
 								
 									sh '''
@@ -46,9 +47,13 @@ args '--entrypoint=""'
 										terraform --version
 										pwd
 ls
+cd eks
+terraform init
+terraform plan
 
 									'''
-									}                                
+									}
+}                                
 									
 							}
                         }
