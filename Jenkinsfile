@@ -31,7 +31,7 @@ pipeline {
 						agent {
                               docker { 
                                                         image 'samdatta93/terraform-aws-cli:latest'
-                                                        
+                                                        args '--entrypoint=""'
                                                 }
                         }
 										
