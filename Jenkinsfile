@@ -40,7 +40,7 @@ pipeline {
 								
 									sh '''
 										echo 'Inside Desploy Terraform';
-										terraform --version
+										
 										rm -rf /usr/local/bin/terraform
 										wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
 										unzip -o terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
