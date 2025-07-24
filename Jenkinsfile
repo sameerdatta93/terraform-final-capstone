@@ -43,11 +43,13 @@ pipeline {
 										echo 'Inside Desploy Terraform';
 										
 										rm -rf /usr/local/bin/terraform
-										wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
+mkdir -p $HOME/bin										
+wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
 										unzip -o terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
 										rm -rf terraform_*.zip
 										rm -rf terraform_*.zip.*
-										sudo mv terraform /usr/local/bin/
+										mv terraform $HOME/bin/
+export PATH=$HOME/bin:$PATH
 										terraform --version
 										aws --version
 									'''
