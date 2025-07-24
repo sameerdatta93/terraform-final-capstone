@@ -32,6 +32,7 @@ pipeline {
                               docker { 
                                                         image 'samdatta93/terraform-aws-cli:latest'
                                                         args '-u root'
+args '--entrypoint=""'
 
                                                 }
                         }
