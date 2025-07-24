@@ -37,7 +37,7 @@ pipeline {
 										
 						 steps{
 							script {
-								ansiColor('xterm'){
+								
 									sh '''
 										echo 'Inside Desploy Terraform');
 										terraform --version
@@ -51,7 +51,7 @@ pipeline {
 										aws --version
 									'''
 									}                                
-								}	
+									
 							}
                         }
 						 stage("Region us-west-2") {
