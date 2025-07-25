@@ -37,9 +37,9 @@ pipeline {
 					steps{
 						withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${CREDENTIAL_ID}"]]){
 							script {
-									if(TERRAFORM_ACTION == 'plan'){
+								if(TERRAFORM_ACTION == 'plan'){
 									sh '''
-									echo 'Inside Desploy Terraform';
+									echo 'Inside Terraform plan';
 									terraform --version
 									pwd
 									ls
@@ -47,12 +47,37 @@ pipeline {
 									terraform init
 									terraform plan
 									'''
-									}else {
-                    sh '''
-                echo "Please select appropriate option from the list"
-                        '''
-                    }
-									
+								} else if(TERRAFORM_ACTION == 'apply'){
+								{
+									sh '''
+									echo 'Inside Terraform apply';
+									terraform --version
+									pwd
+									ls
+									cd eks
+									terraform init
+									terraform plan
+									terraform apply --auto-approve
+									'''
+								} 
+								else if(TERRAFORM_ACTION == 'destroy'){
+								{
+									sh '''
+									echo 'Inside Terraform destroy';
+									terraform --version
+									pwd
+									ls
+									cd eks
+									terraform init
+									terraform plan
+									terraform destroy --auto-approve
+									'''
+								} else 
+								{
+									sh '''
+									echo "Please select appropriate option from the list"
+									'''
+								}
 							}
 						}                                
 					}
