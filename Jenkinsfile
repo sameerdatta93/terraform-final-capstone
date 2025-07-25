@@ -2,7 +2,6 @@ properties([parameters(getParametersBasedOnBuild())])
 pipeline {
     agent any 
     environment {
-	TERRAFORM_VERSION="1.8.2" 
         DOCKERHUB_CREDS = 'sd-dockerhub-creds'
         VERSION = "2.0.${env.BUILD_NUMBER}"
         AWS_REGION = 'us-east-1'
@@ -18,84 +17,79 @@ pipeline {
                 checkout scm
             }
         }
-                stage ('Initializing Terraform Deployment')
-                {
-				 parallel {
-                        stage ('Region us-east-1')
-                        { 
-						when {
-                        expression {
-                            return params.US_EAST_ONE
-                        }
-                    }
-						agent {
-                              docker { 
-                                                        image 'samdatta93/terraform-aws-cli:latest'
-                                                     
-args '--entrypoint=""'
-
-                                                }
-                        }
-										
-						 steps{
-withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${CREDENTIAL_ID}"]]){
+        stage ('Initializing Terraform Deployment')
+        {
+            parallel {
+                stage ('Region us-east-1')
+                { 
+                    when {
+					    expression {
+						return params.US_EAST_ONE
+						}
+					}
+					agent {
+						docker { 
+							image 'samdatta93/terraform-aws-cli:latest'                                     
+							args '--entrypoint=""'
+						}
+					}
+			
+					steps{
+						withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${CREDENTIAL_ID}"]]){
 							script {
-								
+									if(TERRAFORM_ACTION == 'plan'){
 									sh '''
-										echo 'Inside Desploy Terraform';
-										
-										terraform --version
-										pwd
-ls
-cd eks
-terraform init
-terraform plan
-
+									echo 'Inside Desploy Terraform';
+									terraform --version
+									pwd
+									ls
+									cd eks
+									terraform init
+									terraform plan
 									'''
-									}
-}                                
+									}else {
+                    sh '''
+                echo "Please select appropriate option from the list"
+                        '''
+                    }
 									
 							}
-                        }
-						 stage("Region us-west-2") {
+						}                                
+					}
+                }
+                stage("Region us-west-2") {
                     when {
                         expression {
                             return params.US_WEST_TWO
                         }
                     }
-
                     agent {
-                                        docker { 
-                                                image 'node:14-alpine'
-                                                args '-e HOME=/tmp -e NPM_CONFIG_PREFIX=/tmp/.npm'
-                                                reuseNode true
-                                                }
-                                        }
-										
-						 steps{
+						docker { 
+							image 'samdatta93/terraform-aws-cli:latest'                                     
+							args '--entrypoint=""'
+						}
+					}
+					steps{
+						withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "${CREDENTIAL_ID}"]]){
 							script {
-								ansiColor('xterm'){
 									sh '''
-										echo 'Inside Desploy Terraform';
-										
-										rm -rf /usr/local/bin/terraform
-										wget https://releases.hashicorp.com/terraform/"$TERRAFORM_VERSION"/terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
-										unzip -o terraform_"$TERRAFORM_VERSION"_linux_amd64.zip
-										rm -rf terraform_*.zip
-										rm -rf terraform_*.zip.*
-										mv terraform /usr/local/bin/
-										terraform --version
-										aws --version
+									echo 'Inside Desploy Terraform';
+									terraform --version
+									pwd
+									ls
+									cd eks
+									terraform init
+									terraform plan
 									'''
-									}                                
-								}	
 							}
+						}                                
+					}
                 }
-				
-				
-                        }
+
+
+            }
                         
-                }
+        }
     }
     post {
         always {
@@ -107,8 +101,8 @@ terraform plan
 def getParametersBasedOnBuild() {        
     def paramList = []
 
-    paramList.add(booleanParam(name: 'US_EAST_ONE', defaultValue: true, description: 'select this checkbox to deploy in selected region \n NOTE: Selected Region will be primary region'))
-    paramList.add(booleanParam(name: 'US_WEST_TWO', defaultValue: false, description: 'select this checkbox to deploy in selected region \n NOTE: Selected Region will be primary region'))
+    paramList.add(booleanParam(name: 'US_EAST_ONE', defaultValue: true, description: 'select this checkbox to deploy in selected region'))
+    paramList.add(booleanParam(name: 'US_WEST_TWO', defaultValue: false, description: 'select this checkbox to deploy in selected region'))
     if (env.BRANCH_NAME == 'master') {
             paramList.add(choice(name: 'TERRAFORM_ACTION', choices: ['plan','apply','switchover'], description: 'Choose apply to create new instances & destroy to destroy the existing instances'))
         } else{
