@@ -129,9 +129,9 @@ def getParametersBasedOnBuild() {
     paramList.add(booleanParam(name: 'US_EAST_ONE', defaultValue: true, description: 'select this checkbox to deploy in selected region'))
     paramList.add(booleanParam(name: 'US_WEST_TWO', defaultValue: false, description: 'select this checkbox to deploy in selected region'))
     if (env.BRANCH_NAME == 'master') {
-            paramList.add(choice(name: 'TERRAFORM_ACTION', choices: ['plan','apply','switchover'], description: 'Choose apply to create new instances & destroy to destroy the existing instances'))
+            paramList.add(choice(name: 'TERRAFORM_ACTION', choices: ['plan','apply'], description: 'Choose apply to create new instances & destroy to destroy the existing instances'))
         } else{
-            paramList.add(choice(name: 'TERRAFORM_ACTION', choices: ['plan','apply','destroy','switchover'], description: 'Choose apply to create new instances & destroy to destroy the existing instances, Select Switchove incase of primary region failure'))
+            paramList.add(choice(name: 'TERRAFORM_ACTION', choices: ['plan','apply','destroy'], description: 'Choose apply to create new instances & destroy to destroy the existing instances'))
         }
     
     return paramList
