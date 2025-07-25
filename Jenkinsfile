@@ -47,7 +47,7 @@ pipeline {
 									terraform init
 									terraform plan
 									'''
-								} else if(TERRAFORM_ACTION == 'apply'){
+								} else if(TERRAFORM_ACTION == 'apply')
 								{
 									sh '''
 									echo 'Inside Terraform apply';
@@ -60,7 +60,7 @@ pipeline {
 									terraform apply --auto-approve
 									'''
 								} 
-								else if(TERRAFORM_ACTION == 'destroy'){
+								else if(TERRAFORM_ACTION == 'destroy')
 								{
 									sh '''
 									echo 'Inside Terraform destroy';
